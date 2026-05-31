@@ -753,21 +753,27 @@ function initSetup(){
   var overlay=document.getElementById('setup-overlay');
   if(!overlay)return;
   if(getKey()){overlay.classList.add('hidden');return;}
-  document.getElementById('setup-save-btn').addEventListener('click',function(){
-    var inp=document.getElementById('setup-key');
-    var key=inp.value.trim();
-    var err=document.getElementById('setup-err');
-    if(!key||key.indexOf('sk-ant-')!==0){
-      err.style.display='block';
-      inp.style.borderColor='var(--red)';
-      return;
-    }
-    saveKey(key);
-    overlay.classList.add('hidden');
-  });
-  document.getElementById('setup-skip-btn').addEventListener('click',function(){
-    overlay.classList.add('hidden');
-  });
+  var saveBtn=document.getElementById('setup-save-btn');
+  var skipBtn=document.getElementById('setup-skip-btn');
+  var inp=document.getElementById('setup-key');
+  var err=document.getElementById('setup-err');
+  if(saveBtn){
+    saveBtn.addEventListener('click',function(){
+      var key=inp?inp.value.trim():'';
+      if(!key||key.indexOf('sk-ant-')!==0){
+        if(err)err.style.display='block';
+        if(inp)inp.style.borderColor='var(--red)';
+        return;
+      }
+      saveKey(key);
+      overlay.classList.add('hidden');
+    });
+  }
+  if(skipBtn){
+    skipBtn.addEventListener('click',function(){
+      overlay.classList.add('hidden');
+    });
+  }
 }
 
 function rSettings(root){
@@ -798,7 +804,7 @@ function rSettings(root){
 }
 
 render();
-initSetup();
+setTimeout(initSetup, 100);
 </script>
 </body>
 </html>
